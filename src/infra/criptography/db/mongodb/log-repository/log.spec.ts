@@ -4,6 +4,9 @@ import { LogMongoRepository } from './log'
 
 let errorCollection: Collection
 
+const makeSut = (): LogMongoRepository => {
+  return new LogMongoRepository()
+}
 describe('Log Mongo Respository', () => {
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL)
@@ -17,7 +20,7 @@ describe('Log Mongo Respository', () => {
     await errorCollection.deleteMany({})
   })
   test('Should create an error log on success', async () => {
-    const sut = new LogMongoRepository()
+    const sut = makeSut()
     await sut.logError('any-error')
     const count = await errorCollection.countDocuments()
     expect(count).toBe(1)
