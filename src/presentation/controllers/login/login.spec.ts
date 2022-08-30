@@ -1,7 +1,7 @@
-import { Authentication } from '../../../../domain/use-cases/authentication'
-import { InvalidParamError, MissingParamError, ServerError } from '../../../errors'
-import { badRequest, serverError, unauthorized } from '../../../helpers/http-helper'
-import { EmailValidator, HttpRequest } from '../signup-protocols'
+import { Authentication } from '../../../domain/use-cases/authentication'
+import { InvalidParamError, MissingParamError, ServerError } from '../../errors'
+import { badRequest, serverError, unauthorized } from '../../helpers/http-helper'
+import { EmailValidator, HttpRequest } from '../signup/signup-protocols'
 import { LoginController } from './login'
 
 interface SutTypes {
