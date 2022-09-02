@@ -65,7 +65,7 @@ describe('Bcrypt Adapter', () => {
       throw new Error()
     })
 
-    const promise = sut.hash('any-value')
+    const promise = sut.compare('any-value', 'any-hash')
     await expect(promise).rejects.toThrow()
   })
 })
