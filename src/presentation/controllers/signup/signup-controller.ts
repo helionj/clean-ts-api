@@ -1,4 +1,5 @@
-import { badRequest, ok, serverError } from '../../helpers/http/http-helper'
+import { EmailInUseError } from '../../errors'
+import { badRequest, conflict, ok, serverError } from '../../helpers/http/http-helper'
 import { Controller, HttpRequest, HttpResponse, AddAccount, Validation, Authentication } from './signup-controller-protocols'
 
 export class SignupController implements Controller {
@@ -18,11 +19,15 @@ export class SignupController implements Controller {
         return badRequest(error)
       }
       const { name, email, password } = httpRequest.body
-      await this.addAccount.add({
+      const account = await this.addAccount.add({
         name,
         email,
         password
       })
+
+      if (!account) {
+        return conflict(new EmailInUseError())
+      }
       const accessToken = await this.authentication.auth({
         email,
         password
