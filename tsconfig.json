@@ -8,6 +8,6 @@
       "sourceMap": true,
       "rootDir": "src"
     },
-    "include": ["src"],
+    "include": ["src", "src/presentation/errors/.ts"],
     "exclude": ["**/*.spec.ts", "**/*.test.ts"]
 }
