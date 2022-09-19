@@ -108,7 +108,7 @@ describe('Account Mongo repository', () => {
     })
     test('Should return null on loadByToken fails', async () => {
       const sut = makeSut()
-      const account = await sut.loadByToken('any-token', 'any-role')
+      const account = await sut.loadByToken('any-token')
       expect(account).toBeFalsy()
     })
   })
