@@ -90,26 +90,53 @@ describe('Account Mongo repository', () => {
       expect(account.email).toBe('any-email@email.com')
       expect(account.password).toBe('any-password')
     })
-    test('Should return an account on loadByToken with role and token', async () => {
+    test('Should return an account on loadByToken with admin role', async () => {
       const sut = makeSut()
       await accountCollection.insertOne({
         name: 'any-name',
         email: 'any-email@email.com',
         password: 'any-password',
         accessToken: 'any-token',
-        role: 'any-role'
+        role: 'admin'
       })
-      const account = await sut.loadByToken('any-token', 'any-role')
+      const account = await sut.loadByToken('any-token', 'admin')
       expect(account).toBeTruthy()
       expect(account.id).toBeTruthy()
       expect(account.name).toBe('any-name')
       expect(account.email).toBe('any-email@email.com')
       expect(account.password).toBe('any-password')
     })
+    test('Should not return an account on loadByToken with invalid role', async () => {
+      const sut = makeSut()
+      await accountCollection.insertOne({
+        name: 'any-name',
+        email: 'any-email@email.com',
+        password: 'any-password',
+        accessToken: 'any-token'
+      })
+      const account = await sut.loadByToken('any-token', 'admin')
+      expect(account).toBeFalsy()
+    })
     test('Should return null on loadByToken fails', async () => {
       const sut = makeSut()
       const account = await sut.loadByToken('any-token')
       expect(account).toBeFalsy()
+    })
+    test('Should return an account on loadByToken with admin role', async () => {
+      const sut = makeSut()
+      await accountCollection.insertOne({
+        name: 'any-name',
+        email: 'any-email@email.com',
+        password: 'any-password',
+        accessToken: 'any-token',
+        role: 'admin'
+      })
+      const account = await sut.loadByToken('any-token')
+      expect(account).toBeTruthy()
+      expect(account.id).toBeTruthy()
+      expect(account.name).toBe('any-name')
+      expect(account.email).toBe('any-email@email.com')
+      expect(account.password).toBe('any-password')
     })
   })
 })
