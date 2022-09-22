@@ -3,7 +3,7 @@ import { LoadSurveysRepository, SurveyModel, LoadSurveys } from './db-load-surve
 export class DbLoadSurveys implements LoadSurveys {
   constructor (private readonly loadSurveysRepository: LoadSurveysRepository) {}
   async load (): Promise<SurveyModel[]> {
-    await this.loadSurveysRepository.load()
-    return null
+    const surveys = await this.loadSurveysRepository.load()
+    return surveys
   }
 }
