@@ -70,14 +70,13 @@ describe('Survey Routes', () => {
         .expect(204)
     })
   })
-  /*
   describe('GET /surveys', () => {
     test('Should return 403 on load surveys without a token', async () => {
       await request(app)
         .get('/api/surveys')
         .expect(403)
     })
-    test('Should return 200 on load surveys with a vali accessToken', async () => {
+    test('Should return 200 on load surveys with a valid accessToken', async () => {
       const result = await accountCollection.insertOne({
         name: 'Hélion Porto',
         email: 'helionporto@gmail.com',
@@ -89,11 +88,23 @@ describe('Survey Routes', () => {
         _id: id
       }, { $set: { accessToken } })
 
+      await surveyCollection.insertMany([
+        {
+          question: 'any-question',
+          answers: [
+            {
+              image: 'any-image',
+              answer: 'any-answer'
+            }
+          ],
+          date: new Date()
+        }
+      ])
+
       await request(app)
         .get('/api/surveys')
         .set('x-access-token', accessToken)
         .expect(200)
     })
   })
-  */
 })
