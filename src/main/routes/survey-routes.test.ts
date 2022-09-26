@@ -39,22 +39,22 @@ describe('Survey Routes', () => {
         })
         .expect(403)
     })
-    test('Should return 204 on add survey with a valic accessToken', async () => {
+    test('Should return 204 on add survey with a valid accessToken', async () => {
       const result = await accountCollection.insertOne({
         name: 'Hélion Porto',
         email: 'helionporto@gmail.com',
         password: '123',
         role: 'admin'
       })
-      const { insertedId: id } = result
-      const accessToken = sign({ insertedId: id }, env.jwtSecret)
+      const id = result.insertedId
+      const accessToken = sign({ id }, env.jwtSecret)
       await accountCollection.updateOne({
         _id: id
       }, { $set: { accessToken } })
 
       await request(app)
         .post('/api/surveys')
-        .set('x-accessToken', accessToken)
+        .set('x-access-token', accessToken)
         .send({
           question: 'Question 1',
           answers: [
@@ -67,14 +67,33 @@ describe('Survey Routes', () => {
             }
           ]
         })
-        .expect(403)
+        .expect(204)
     })
   })
+  /*
   describe('GET /surveys', () => {
     test('Should return 403 on load surveys without a token', async () => {
       await request(app)
         .get('/api/surveys')
         .expect(403)
     })
+    test('Should return 200 on load surveys with a vali accessToken', async () => {
+      const result = await accountCollection.insertOne({
+        name: 'Hélion Porto',
+        email: 'helionporto@gmail.com',
+        password: '123'
+      })
+      const id = result.insertedId
+      const accessToken = sign({ id }, env.jwtSecret)
+      await accountCollection.updateOne({
+        _id: id
+      }, { $set: { accessToken } })
+
+      await request(app)
+        .get('/api/surveys')
+        .set('x-access-token', accessToken)
+        .expect(200)
+    })
   })
+  */
 })
