@@ -6,7 +6,7 @@
       "esModuleInterop": true,
       "strictNullChecks": false,
       "sourceMap": true,
-      "rootDir": "src"
+      "rootDir": "src",
     },
     "include": ["src", "src/presentation/errors/.ts"],
     "exclude": ["**/*.spec.ts", "**/*.test.ts"]
