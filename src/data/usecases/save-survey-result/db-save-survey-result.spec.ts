@@ -55,4 +55,12 @@ describe('DbSaveSurveyResult Use Case', () => {
     await sut.save(surveyData)
     expect(saveSpy).toHaveBeenCalledWith(surveyData)
   })
+  test('Should throw when saveSurveyResultRepository throws exception', async () => {
+    const { sut, saveSurveyResultRepositoryStub } = makeSut()
+    jest.spyOn(saveSurveyResultRepositoryStub, 'save').mockImplementation(() => {
+      throw new Error()
+    })
+    const promise = sut.save(makeFakeSurveyResultData())
+    await expect(promise).rejects.toThrow()
+  })
 })
