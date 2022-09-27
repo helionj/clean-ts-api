@@ -50,4 +50,9 @@ describe('DbLoadSourveyById', () => {
     await sut.loadById('any-id')
     expect(loadByIdSpy).toHaveBeenCalledWith('any-id')
   })
+  test('Should return a survey on success', async () => {
+    const { sut } = makeSut()
+    const response = await sut.loadById('any-id')
+    expect(response).toEqual(makeFakeSurvey())
+  })
 })
