@@ -55,4 +55,12 @@ describe('DbLoadSourveyById', () => {
     const response = await sut.loadById('any-id')
     expect(response).toEqual(makeFakeSurvey())
   })
+  test('Should throw when LoadSurveysRepository throws exception', async () => {
+    const { sut, loadSurveyByIdRepositoryStub } = makeSut()
+    jest.spyOn(loadSurveyByIdRepositoryStub, 'loadById').mockImplementation(() => {
+      throw new Error()
+    })
+    const promise = sut.loadById('any-id')
+    await expect(promise).rejects.toThrow()
+  })
 })
