@@ -17,8 +17,11 @@ export class SurveyResultMongoRepository implements SaveSurveyResultRepository {
       upsert: true
     }
 
-    const updateRes = await surveyResultCollection.updateOne(filter, updateData, options)
-    const res = await surveyResultCollection.findOne({ _id: updateRes.upsertedId })
-    return res && MongoHelper.map(res) as SurveyResultModel
+    await surveyResultCollection.updateOne(filter, updateData, options)
+
+    const res = await surveyResultCollection.findOne(filter)
+    if (res) {
+      return MongoHelper.map(res) as SurveyResultModel
+    }
   }
 }
