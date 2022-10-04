@@ -1,7 +1,7 @@
 import { InvalidParamError } from '../../../errors'
 import { forbidden, ok, serverError } from '../../../helpers/http/http-helper'
 import { SaveSurveyResultController } from './save-survey-result-controller'
-import { HttpRequest, SurveyModel, LoadSurveyById, SurveyResultModel, SaveSurveyResult, SaveSurveyResultModel } from './save-survey-result-controller-protocols'
+import { HttpRequest, SurveyModel, LoadSurveyById, SurveyResultModel, SaveSurveyResult, SaveSurveyResultParams } from './save-survey-result-controller-protocols'
 import MockDate from 'mockdate'
 
 const makeFakeSurvey = (): SurveyModel => {
@@ -52,7 +52,7 @@ const makeLoadSurveyById = (): LoadSurveyById => {
 }
 const makeSaveSurveyResultStub = (): SaveSurveyResult => {
   class SaveSurveyResultStub implements SaveSurveyResult {
-    async save (data: SaveSurveyResultModel): Promise<SurveyResultModel> {
+    async save (data: SaveSurveyResultParams): Promise<SurveyResultModel> {
       return await new Promise(resolve => resolve(makeFakeSurveyResult()))
     }
   }
