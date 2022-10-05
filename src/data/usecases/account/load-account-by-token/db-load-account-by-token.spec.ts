@@ -1,32 +1,9 @@
 import { Decrypter } from '../../../protocols/cryptography/decrypter'
 import { DbLoadAccountByToken } from './db-load-account-by-token'
 import { LoadAccountByTokenRepository } from '../../../protocols/db/account/loud-account-by-token-repository'
-import { AccountModel } from '../add-account/db-add-account-protocols'
-import { throwError } from '../../../../domain/test'
+import { mockAccountModel, throwError } from '../../../../domain/test'
+import { mockDecrypter, mockLoadAccountByTokenRepository } from '../../../test/index'
 
-const makeFakeAccount = (): AccountModel => ({
-  id: 'valid-id',
-  name: 'valid-name',
-  email: 'valid-email@email.com',
-  password: 'hashed-password'
-})
-const makeDecrypterStub = (): Decrypter => {
-  class DecrypterStub implements Decrypter {
-    async decrypt (id: string): Promise<string> {
-      return await new Promise(resolve => resolve('token-decrypt'))
-    }
-  }
-  return new DecrypterStub()
-}
-
-const makeLoadAccountByTokenRepositoryStub = (): LoadAccountByTokenRepository => {
-  class LoadAccountByTokenRepositoryStub implements LoadAccountByTokenRepository {
-    async loadByToken (token: string): Promise<AccountModel> {
-      return await new Promise(resolve => resolve(makeFakeAccount()))
-    }
-  }
-  return new LoadAccountByTokenRepositoryStub()
-}
 type SutTypes = {
   sut: DbLoadAccountByToken
   decrypterStub: Decrypter
@@ -34,8 +11,8 @@ type SutTypes = {
 }
 
 const makeSut = (): SutTypes => {
-  const decrypterStub = makeDecrypterStub()
-  const loadAccountByTokenRepositoryStub = makeLoadAccountByTokenRepositoryStub()
+  const decrypterStub = mockDecrypter()
+  const loadAccountByTokenRepositoryStub = mockLoadAccountByTokenRepository()
   const sut = new DbLoadAccountByToken(decrypterStub, loadAccountByTokenRepositoryStub)
   return {
     sut,
@@ -74,7 +51,7 @@ describe('DbLoadAccountByToken', () => {
   test('Should return an account on success', async () => {
     const { sut } = makeSut()
     const account = await sut.load('any-token', 'any-role')
-    expect(account).toEqual(makeFakeAccount())
+    expect(account).toEqual(mockAccountModel())
   })
   test('Should throw when Decrypter throws exception', async () => {
     const { sut, decrypterStub } = makeSut()
