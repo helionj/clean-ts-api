@@ -52,7 +52,7 @@ describe('Signup Controller', () => {
     const { sut, addAccountStub } = makeSut()
 
     jest.spyOn(addAccountStub, 'add').mockImplementation(async () => {
-      return await new Promise((resolve, reject) => reject(new ServerError()))
+      return await Promise.reject(new ServerError())
     })
 
     const httpResponse = await sut.handle(mockRequest())
@@ -100,7 +100,7 @@ describe('Signup Controller', () => {
 
   test('Should return 409 when AddAccount returns null', async () => {
     const { sut, addAccountStub } = makeSut()
-    jest.spyOn(addAccountStub, 'add').mockReturnValueOnce(new Promise(resolve => resolve(null)))
+    jest.spyOn(addAccountStub, 'add').mockReturnValueOnce(Promise.resolve(null))
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(conflict(new EmailInUseError()))
   })
